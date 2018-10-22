@@ -3,7 +3,7 @@
 using namespace std;
 
 //initialization
-vecDemo::vecDemo():vec_var(LEN)
+vecDemo<double>::vecDemo() :vec_var(LEN)
 {
 	d_var[0] = 1.1;
 	d_var[1] = 2.1;
@@ -18,12 +18,18 @@ vecDemo::vecDemo():vec_var(LEN)
 	arr_var = { 1.1, 2.2, 3.4, 5.6 };
 }
 
-
-vecDemo::~vecDemo()
+template <typename T>
+vecDemo<T>::vecDemo():vec_var(LEN)
 {
 }
 
-void vecDemo::printVar()
+template <typename T>
+vecDemo<T>::~vecDemo()
+{
+}
+
+template <typename T>
+void vecDemo<T>::printVar()
 {
 	using namespace std;
 	cout << "double variable" << endl;
@@ -36,8 +42,9 @@ void vecDemo::printVar()
 
 int main()
 {
-	vecDemo vec;
-	vec.printVar();
+	vecDemo<double> vecD;
+
+	vecD.printVar();
 	cin.get();
 	return 0;
 }

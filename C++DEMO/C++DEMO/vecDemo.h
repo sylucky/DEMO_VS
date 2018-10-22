@@ -5,6 +5,7 @@
 #define LEN 4
 using namespace std;
 
+template <typename T>
 class vecDemo
 {
 public:
@@ -13,9 +14,9 @@ public:
 
 	void printVar();
 private:
-	double d_var[LEN];
-	vector<double> vec_var;
-	array<double, LEN> arr_var;
+	T d_var[LEN];
+	vector<T> vec_var;
+	array<T, LEN> arr_var;
 
 };
 
