@@ -40,11 +40,11 @@ void vecDemo<T>::printVar()
 	cout << arr_var[0] << endl << arr_var[1] << endl << arr_var[2] << endl << arr_var[3] << endl << endl;
 }
 
-int main()
-{
-	vecDemo<double> vecD;
-
-	vecD.printVar();
-	cin.get();
-	return 0;
-}
+//int main()
+//{
+//	vecDemo<double> vecD;
+//
+//	vecD.printVar();
+//	cin.get();
+//	return 0;
+//}
