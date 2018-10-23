@@ -1,18 +1,47 @@
 #include "LinkList.h"
 
-#include <stddef.h>
-
 using namespace std;
 
-Node::Node(int d)
+StuInfo::StuInfo(string id, string name, string gender, int age)
 {
-	this->data = d;
+	stuid = id;
+	stuname = name;
+	stugender = gender;
+	stuage = age;
+}
+StuInfo::StuInfo()
+{
+	stuage = 0;
+}
+
+StuInfo::~StuInfo()
+{
+
+}
+
+void StuInfo::stuCopy(StuInfo s)
+{
+	stuid = s.stuid;
+	stuname = s.stuname;
+	stugender = s.stugender;
+	stuage = s.stuage;
+}
+
+void StuInfo::stuDisplay()
+{
+	cout << stuid << " , " << stuname << " , " << stugender << " , " << stuage << endl;
+}
+
+Node::Node(int seq, StuInfo s)
+{
+	this->sinfo.stuCopy(s);
 	this->next = NULL;
+	this->seqno = seq;
 }
 
 Node::Node()
 {
-	data = 0;
+	seqno = 0;
 	next = NULL;
 }
 
@@ -34,23 +63,23 @@ List::~List()
 	delete tail;
 }
 
-void List::linsert(int da)
+void List::lInsert(int seq, StuInfo s)
 {
-	if (head == NULL)//insert data first
+	if (head == NULL)//insert seq first
 	{
 		head = new Node();
-		tail = new Node(da);
+		tail = new Node(seq, s);
 		head->next = tail;
 	}
 	else
 	{
-		Node *inode = new Node(da);
+		Node *inode = new Node(seq, s);
 		tail->next = inode;
 		tail = inode;
 	}
 }
 
-void List::ldelete(int da)
+void List::lDelete(int seq)
 {
 	Node *p;
 	p = head;
@@ -60,12 +89,12 @@ void List::ldelete(int da)
 		return;
 	}
 	//遍历链表
-	while (p != tail && p->next->data != da)
+	while (p->next != NULL && p->next->seqno != seq)
 	{
 		p = p->next;
 	}
 
-	if (p->next->data != da)
+	if (p->next == NULL || p->next->seqno != seq)
 	{
 		cout << "not found the node!" << endl;
 		return;
@@ -80,101 +109,103 @@ void List::ldelete(int da)
 	{
 		p->next = p->next->next;
 	}
+	cout << "delete the No." << seq << ": ";
+	p->sinfo.stuDisplay();
 }
 
-int List::lsearch(int da)
+int List::lSearch(int seq)
 {
 	Node *p = head;
-	while (p != NULL && p->data != da)
+	while (p != NULL && p->seqno != seq)
 	{
-		p=p->next;
+		p = p->next;
 	}
 
-	if (p->data != da)
+	if (p == NULL || p->seqno != seq)
 	{
 		cout << "not found the node!" << endl;
 		return -1;
 	}
 	else
 	{
-		cout << "found the node:" << da << endl;
-		return da;
+		cout << "found the No." << seq << ": ";
+		p->sinfo.stuDisplay();
+		return seq;
 	}
 
 	return -1;
 }
 
-void List::lgetVal(int da)
+void List::lgetVal(int seq)
 {
 	Node *p = head;
-	while (p != NULL && p->data != da)
+	while (p != NULL && p->seqno != seq)
 	{
 		p = p->next;
 	}
 
-	if (p==NULL || p->data != da)
+	if (p == NULL || p->seqno != seq)
 	{
 		cout << "not found the node!" << endl;
-		return ;
+		return;
 	}
 	else
 	{
-		cout << "found " << da << endl;
-		return ;
+		cout << "found " << seq << endl;
+		return;
 	}
-	return ;
+	return;
 }
 
-void List::lsetVal(int da, int val)
+void List::lSetVal(int seq, StuInfo s)
 {
 	Node *p = head;
-	while (p != NULL && p->data != da)
+	while (p != NULL && p->seqno != seq)
 	{
-		p=p->next;
+		p = p->next;
 	}
 
-	if (p->data != da)
+	if (p == NULL || p->seqno != seq)
 	{
 		cout << "not found the node!" << endl;
-		return ;
+		return;
 	}
 	else
 	{
-		cout << "change No." << da << " value to " << val << endl;
-		p->data = val;
-		return ;
+		cout << "change No." << seq << ": ";
+		p->sinfo.stuCopy(s);
+		p->sinfo.stuDisplay();
+		return;
 	}
 }
 
-void List::ldisplay()
+void List::lDisplay()
 {
 	Node *p = head;
 	while (p != tail)
 	{
-		cout << p->next->data << endl;
+		p->next->sinfo.stuDisplay();
 		p = p->next;
 	}
 }
 
+//test main
+//4 student objects execute display, delete, search, setval, display operation
 int main()
 {
+	int i = 1;
 	cout << "hello LinkList!" << endl;
 	List l;
-	l.linsert(1);
-	l.linsert(2);
-	l.linsert(3);
-	l.linsert(4);
-	l.linsert(5);
-	l.linsert(6);
-	l.linsert(7);
-	l.ldelete(3);
-	l.ldelete(7);
-	l.ldisplay();
-	l.lsearch(4);
-	l.lsetVal(1, 100);
-	l.lgetVal(6);
+	l.lInsert(i++, StuInfo("1001", "张三", "男", 18));
+	l.lInsert(i++, StuInfo("1002", "李四", "男", 19));
+	l.lInsert(i++, StuInfo("1003", "王五", "女", 20));
+	l.lInsert(i++, StuInfo("1004", "赵六", "女", 21));
+	l.lDisplay();
+	l.lDelete(2);
+	l.lSearch(1);
+	l.lSetVal(1, StuInfo("1001", "张小红", "女", 22));
 	cout << "display again" << endl;
-	l.ldisplay();
+	l.lDisplay();
 	cin.get();
 	return 0;
 }
