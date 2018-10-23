@@ -48,15 +48,15 @@ void Complex::display()
 {
 	std::cout << "(" << real << "," << imag << ")" << std::endl;
 }
-
-int main()
-{
-	Complex c1(3.0, 4.0);
-	Complex c2(1.0,0.0);
-	Complex c;
-	c = c1 + c2;
-	c.display();
-	std::cin.get();
-
-	return 0;
-}
+//
+//int main()
+//{
+//	Complex c1(3.0, 4.0);
+//	Complex c2(1.0,0.0);
+//	Complex c;
+//	c = c1 + c2;
+//	c.display();
+//	std::cin.get();
+//
+//	return 0;
+//}
