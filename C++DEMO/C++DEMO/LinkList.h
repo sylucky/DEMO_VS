@@ -15,21 +15,24 @@ public:
 	void stuCopy(StuInfo s);
 	void stuDisplay();
 private:
-	string stuid;
-	string stuname;
-	string stugender;
-	int stuage;
+	string stuId;
+	string stuName;
+	string stuGender;
+	int stuAge;
 };
 
 //node of link list,include counter, the next pointer,and student data.
+template<typename T>
 class Node
 {
 public:
-	Node(int seq, StuInfo s);
-	Node();//for head porinter only
-	~Node();
-	StuInfo sinfo;
+	Node<T>(int seq, T temp);
+	Node<T>(int seq);//for head porinter only
+	~Node<T>();
+	int getSeq();
+	T t;
 	Node *next;
+private:
 	int seqno;
 };
 
@@ -39,13 +42,19 @@ class List
 public:
 	List();
 	~List();
-	void lInsert(int seq, StuInfo s);//link list tail insert
-	void lDelete(int seq);//delete anyone node
-	int lSearch(int seq);//get anyone node
-	void lgetVal(int po);
-	void lSetVal(int seq, StuInfo s);//set anyone node
-	void lDisplay();//display the whole link list
+	void insertNode(Node<StuInfo> *n);//link list tail insert
+	void deleteNode(int seq);//delete anyone node
+	int searchNode(int seq);//get anyone node
+	void getNodeVal(int po);
+	void setNodeVal(int seq, Node<StuInfo> n);//set anyone node
+	void displayList() const;//display the whole link list
 private:
-	Node *head, *tail;
+	Node<StuInfo> *head, *tail;
 	int position;
 };
+
+template<typename T>
+inline int Node<T>::getSeq()
+{
+	return seqno;
+}

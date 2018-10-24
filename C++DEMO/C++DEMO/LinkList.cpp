@@ -4,14 +4,14 @@ using namespace std;
 
 StuInfo::StuInfo(string id, string name, string gender, int age)
 {
-	stuid = id;
-	stuname = name;
-	stugender = gender;
-	stuage = age;
+	stuId = id;
+	stuName = name;
+	stuGender = gender;
+	stuAge = age;
 }
 StuInfo::StuInfo()
 {
-	stuage = 0;
+	stuAge = 0;
 }
 
 StuInfo::~StuInfo()
@@ -21,40 +21,43 @@ StuInfo::~StuInfo()
 
 void StuInfo::stuCopy(StuInfo s)
 {
-	stuid = s.stuid;
-	stuname = s.stuname;
-	stugender = s.stugender;
-	stuage = s.stuage;
+	stuId = s.stuId;
+	stuName = s.stuName;
+	stuGender = s.stuGender;
+	stuAge = s.stuAge;
 }
 
 void StuInfo::stuDisplay()
 {
-	cout << stuid << " , " << stuname << " , " << stugender << " , " << stuage << endl;
+	cout << stuId << " , " << stuName << " , " << stuGender << " , " << stuAge << endl;
 }
 
-Node::Node(int seq, StuInfo s)
+template<typename T>
+Node<T>::Node(int seq, T temp)
 {
-	this->sinfo.stuCopy(s);
+	this->t.stuCopy(temp);
 	this->next = NULL;
 	this->seqno = seq;
 }
 
-Node::Node()
+template<typename T>
+Node<T>::Node(int seq)
 {
-	seqno = 0;
+	seqno = seq;
 	next = NULL;
 }
 
-Node::~Node()
+template<typename T>
+Node<T>::~Node()
 {
 	next = NULL;
 }
 
 List::List()
 {
-	this->head = NULL;
 	position = 0;
-	(*this).tail = NULL;//another usage
+	head = NULL;
+	tail = NULL;
 }
 
 List::~List()
@@ -63,38 +66,42 @@ List::~List()
 	delete tail;
 }
 
-void List::lInsert(int seq, StuInfo s)
+void List::insertNode(Node<StuInfo> *n)
 {
 	if (head == NULL)//insert seq first
 	{
-		head = new Node();
-		tail = new Node(seq, s);
-		head->next = tail;
+		head = n;
+		tail = n;
+		cout << "1" << endl;
+		head->t.stuDisplay();
+		cout << "end" << endl;
 	}
 	else
 	{
-		Node *inode = new Node(seq, s);
-		tail->next = inode;
-		tail = inode;
+		tail->next = n;
+		tail = n;
+		cout << "2" << endl;
 	}
 }
 
-void List::lDelete(int seq)
+void List::deleteNode(int seq)
 {
-	Node *p;
+	Node<StuInfo> *p;
 	p = head;
-	if (head == NULL)
+	if (head->next == NULL)
 	{
 		cout << "LinkList is empty!" << endl;
 		return;
 	}
 	//遍历链表
-	while (p->next != NULL && p->next->seqno != seq)
+	while (p->next != NULL && p->next->getSeq() != seq)
 	{
+		cout << "LinkList is empty!" << p->next->getSeq() << "," << seq << endl;
+		p->next->t.stuDisplay();
 		p = p->next;
 	}
 
-	if (p->next == NULL || p->next->seqno != seq)
+	if (p->next == NULL || p->next->getSeq() != seq)
 	{
 		cout << "not found the node!" << endl;
 		return;
@@ -110,18 +117,18 @@ void List::lDelete(int seq)
 		p->next = p->next->next;
 	}
 	cout << "delete the No." << seq << ": ";
-	p->sinfo.stuDisplay();
+	p->t.stuDisplay();
 }
 
-int List::lSearch(int seq)
+int List::searchNode(int seq)
 {
-	Node *p = head;
-	while (p != NULL && p->seqno != seq)
+	Node<StuInfo> *p = head;
+	while (p != NULL && p->getSeq() != seq)
 	{
 		p = p->next;
 	}
 
-	if (p == NULL || p->seqno != seq)
+	if (p == NULL || p->getSeq() != seq)
 	{
 		cout << "not found the node!" << endl;
 		return -1;
@@ -129,22 +136,22 @@ int List::lSearch(int seq)
 	else
 	{
 		cout << "found the No." << seq << ": ";
-		p->sinfo.stuDisplay();
+		p->t.stuDisplay();
 		return seq;
 	}
 
 	return -1;
 }
 
-void List::lgetVal(int seq)
+void List::getNodeVal(int seq)
 {
-	Node *p = head;
-	while (p != NULL && p->seqno != seq)
+	Node<StuInfo> *p = head;
+	while (p != NULL && p->getSeq() != seq)
 	{
 		p = p->next;
 	}
 
-	if (p == NULL || p->seqno != seq)
+	if (p == NULL || p->getSeq() != seq)
 	{
 		cout << "not found the node!" << endl;
 		return;
@@ -157,15 +164,16 @@ void List::lgetVal(int seq)
 	return;
 }
 
-void List::lSetVal(int seq, StuInfo s)
+void List::setNodeVal(int seq, Node<StuInfo> n)
 {
-	Node *p = head;
-	while (p != NULL && p->seqno != seq)
+	Node<StuInfo> *inode = &n;
+	Node<StuInfo> *p = head;
+	while (p != NULL && p->getSeq() != seq)
 	{
 		p = p->next;
 	}
 
-	if (p == NULL || p->seqno != seq)
+	if (p == NULL || p->getSeq() != seq)
 	{
 		cout << "not found the node!" << endl;
 		return;
@@ -173,18 +181,18 @@ void List::lSetVal(int seq, StuInfo s)
 	else
 	{
 		cout << "change No." << seq << ": ";
-		p->sinfo.stuCopy(s);
-		p->sinfo.stuDisplay();
+		p = inode;
+		p->t.stuDisplay();
 		return;
 	}
 }
 
-void List::lDisplay()
+void List::displayList() const
 {
-	Node *p = head;
-	while (p != tail)
+	Node<StuInfo> *p = head;
+	while (p != NULL)
 	{
-		p->next->sinfo.stuDisplay();
+		p->t.stuDisplay();
 		p = p->next;
 	}
 }
@@ -195,17 +203,22 @@ int main()
 {
 	int i = 1;
 	cout << "hello LinkList!" << endl;
-	List l;
-	l.lInsert(i++, StuInfo("1001", "张三", "男", 18));
-	l.lInsert(i++, StuInfo("1002", "李四", "男", 19));
-	l.lInsert(i++, StuInfo("1003", "王五", "女", 20));
-	l.lInsert(i++, StuInfo("1004", "赵六", "女", 21));
-	l.lDisplay();
-	l.lDelete(2);
-	l.lSearch(1);
-	l.lSetVal(1, StuInfo("1001", "张小红", "女", 22));
+	List list;
+
+	Node<StuInfo> stu1(i++, StuInfo("1001", "张三", "男", 18));
+	Node<StuInfo> stu2(i++, StuInfo("1002", "李四", "男", 19));
+	Node<StuInfo> stu3(i++, StuInfo("1003", "王五", "女", 20));
+	Node<StuInfo> stu4(i++, StuInfo("1004", "赵六", "女", 21));
+	list.insertNode(&stu1);
+	list.insertNode(&stu2);
+	list.insertNode(&stu3);
+	list.insertNode(&stu4);
+	list.displayList();
+	list.deleteNode(2);
+	list.searchNode(1);
+	list.setNodeVal(1, Node<StuInfo>(1, StuInfo("1001", "张小红", "女", 22)));
 	cout << "display again" << endl;
-	l.lDisplay();
+	list.displayList();
 	cin.get();
 	return 0;
 }
