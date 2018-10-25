@@ -199,26 +199,26 @@ void List::displayList() const
 
 //test main
 //4 student objects execute display, delete, search, setval, display operation
-int main()
-{
-	int i = 1;
-	cout << "hello LinkList!" << endl;
-	List list;
-
-	Node<StuInfo> stu1(i++, StuInfo("1001", "张三", "男", 18));
-	Node<StuInfo> stu2(i++, StuInfo("1002", "李四", "男", 19));
-	Node<StuInfo> stu3(i++, StuInfo("1003", "王五", "女", 20));
-	Node<StuInfo> stu4(i++, StuInfo("1004", "赵六", "女", 21));
-	list.insertNode(&stu1);
-	list.insertNode(&stu2);
-	list.insertNode(&stu3);
-	list.insertNode(&stu4);
-	list.displayList();
-	list.deleteNode(2);
-	list.searchNode(1);
-	list.setNodeVal(1, Node<StuInfo>(1, StuInfo("1001", "张小红", "女", 22)));
-	cout << "display again" << endl;
-	list.displayList();
-	cin.get();
-	return 0;
-}
+//int main()
+//{
+//	int i = 1;
+//	cout << "hello LinkList!" << endl;
+//	List l;
+//s
+//	Node<StuInfo> stu1(i++, StuInfo("1001", "张三", "男", 18));
+//	Node<StuInfo> stu2(i++, StuInfo("1002", "李四", "男", 19));
+//	Node<StuInfo> stu3(i++, StuInfo("1003", "王五", "女", 20));
+//	Node<StuInfo> stu4(i++, StuInfo("1004", "赵六", "女", 21));
+//	l.insertNode(&stu1);
+//	l.insertNode(&stu2);
+//	l.insertNode(&stu3);
+//	l.insertNode(&stu4);
+//	l.displayList();
+//	l.deleteNode(2);
+//	l.searchNode(1);
+//	l.setNodeVal(1, Node<StuInfo>(1, StuInfo("1001", "张小红", "女", 22)));
+//	cout << "display again" << endl;
+//	l.displayList();
+//	cin.get();
+//	return 0;
+//}
